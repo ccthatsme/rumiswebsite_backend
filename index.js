@@ -55,6 +55,7 @@ server.post('/additem', (req, res) => {
     req.session.item;
     sess.cartContents;
     sess.item;
+    sess.totalCart;
     req.session.item = req.body;
     cartArray.push(req.session.item);
     req.session.array = cartArray;
@@ -63,21 +64,22 @@ server.post('/additem', (req, res) => {
 
     //let cartText = JSON.stringify(item);
     sess.cartContents = JSON.stringify(cartArray);
-    console.log(req.session.array);
-    console.log(cartArray);
+    // console.log(req.session.array);
+    // console.log(cartArray);
+    sess.totalCart = cartArray.length;
    fs.writeFile('cartarray.json', sess.cartContents, {'flag':'w'}, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
       });
 
       res.status(200);
-      
-      res.json(req.body);
+      console.log(cartArray.length.toString());
+      res.send(sess.totalCart.toString());
       
       let total = JSON.parse(sess.cartContents);
       
 });
-console.log(cartArray);
+
 // server.post('/additem', (req, res) => {
 //     sess = req.session;
 //     sess.cartContents;
