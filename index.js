@@ -10,12 +10,15 @@ const loadJsonFile = require('load-json-file');
 server.use(cors());
 server.use(bodyParser.json());
 //server.use(cookieParser);
-server.use(session({secret:'Its a secret', resave:'false', saveUninitialized:'true'}));
+server.use(session({secret:'Its a secret', resave:true, saveUninitialized:true, cookie: {secure: true}, genid: function(req){
+    return this.genid;
+}}));
 
 var sess;
 const port = 3000;
 const cartArrayStore = [];
 let rawData = '';
+const cartArray = [];
 
 
 server.get('/hello', (req, res) => {
@@ -49,13 +52,19 @@ server.get('/cartitemtotal', (req, res) => {
 
 server.post('/additem', (req, res) => {
     sess = req.session;
+    req.session.item;
     sess.cartContents;
-    console.log(sess);
-    const item = req.body;
+    sess.item;
+    req.session.item = req.body;
+    cartArray.push(req.session.item);
+    req.session.array = cartArray;
 
-    let cartText = JSON.stringify(item);
-    sess.cartContents = JSON.stringify(item);
-    console.log(sess.cartContents);
+    //cartArray.push(req.session.item);
+
+    //let cartText = JSON.stringify(item);
+    sess.cartContents = JSON.stringify(cartArray);
+    console.log(req.session.array);
+    console.log(cartArray);
    fs.writeFile('cartarray.json', sess.cartContents, {'flag':'w'}, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
@@ -65,6 +74,30 @@ server.post('/additem', (req, res) => {
       
       res.json(req.body);
       
-})
+      let total = JSON.parse(sess.cartContents);
+      
+});
+console.log(cartArray);
+// server.post('/additem', (req, res) => {
+//     sess = req.session;
+//     sess.cartContents;
+//     console.log(sess);
+//     const item = req.body;
+
+//     let cartText = JSON.stringify(item);
+//     sess.cartContents = JSON.stringify(item);
+//     console.log(sess.cartContents);
+//    fs.writeFile('cartarray.json', sess.cartContents, {'flag':'w'}, (err) => {
+//         if (err) throw err;
+//         console.log('The file has been saved!');
+//       });
+
+//       res.status(200);
+      
+//       res.json(req.body);
+      
+//       let total = JSON.parse(sess.cartContents);
+      
+// });
 
 server.listen(port, () => console.log(`app listening at port number ${port}`)); 

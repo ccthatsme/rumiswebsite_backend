@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "backend database",
   "main": "index.js",
+  "nodemonConfig":{
+    "watch": [
+      "index"
+    ],
+    "ext": "js",
+    "ignore": [
+      "cartarray.json"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,4 +27,5 @@
     "load-json-file": "^6.2.0",
     "nodemon": "^2.0.4"
   }
+
 }
