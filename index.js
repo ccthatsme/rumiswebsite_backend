@@ -81,18 +81,24 @@ server.post('/additem', (req, res) => {
 });
 
 server.delete('/clearAllCart', (req, res) => {
-    let emptyArray = [];
-
-    fs.writeFile('cartarray.json', JSON.stringify(emptyArray), {'flag':'w'}, (err) => {
-        if (err) throw err;
-        console.log('The file has been saved!');
-      });
-
-      req.session.destroy();
-      req.session.cartContents.destroy();
+    cartArray.splice(0, cartArray.length);
+      req.session.destroy(function(err){
+        if(err){
+           console.log(err);
+        }else{
+            console.log('hi');
+           // res.redirect('/signup');
+        }
+     });
+      //req.session.cartContents.destroy();
 
       res.status(200);
       res.send({ result: 'OK', message: 'Session destroyed' });
+
+      fs.writeFile('cartarray.json', JSON.stringify(cartArray), {'flag':'w'}, (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+      });
 });
 
 // server.post('/additem', (req, res) => {
