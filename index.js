@@ -25,9 +25,19 @@ server.get('/hello', (req, res) => {
     sess = req.session;
   loadJsonFile('./cartarray.json').then(json => {
    let array = json;
-    //res.sendStatus(array.length);
+    res.sendStatus(array.length);
 });
     
+});
+
+server.get('/cartcontents', (req, res) => {
+  sess = req.session;
+loadJsonFile('./cartarray.json').then(json => {
+  console.log(json);
+ let array = json;
+  res.send(array);
+});
+  
 });
 
 server.get('/cartitemtotal', (req, res) => {
@@ -101,26 +111,5 @@ server.delete('/clearAllCart', (req, res) => {
       });
 });
 
-// server.post('/additem', (req, res) => {
-//     sess = req.session;
-//     sess.cartContents;
-//     console.log(sess);
-//     const item = req.body;
-
-//     let cartText = JSON.stringify(item);
-//     sess.cartContents = JSON.stringify(item);
-//     console.log(sess.cartContents);
-//    fs.writeFile('cartarray.json', sess.cartContents, {'flag':'w'}, (err) => {
-//         if (err) throw err;
-//         console.log('The file has been saved!');
-//       });
-
-//       res.status(200);
-      
-//       res.json(req.body);
-      
-//       let total = JSON.parse(sess.cartContents);
-      
-// });
 
 server.listen(port, () => console.log(`app listening at port number ${port}`)); 
